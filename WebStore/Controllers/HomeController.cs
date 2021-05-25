@@ -38,5 +38,18 @@ namespace WebStore.Controllers
         {
             return View(__Employees);
         }
+
+        public IActionResult EmployeDetails(int id)
+        {
+            var employee = __Employees.FirstOrDefault(employe => employe.Id == id);
+
+            if (employee == null)
+                return NotFound();
+
+            return View(employee);
+        }
+
+        public IActionResult Blog() => View();
+        public IActionResult BlogSingle() => View();
     }
 }

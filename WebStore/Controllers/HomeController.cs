@@ -38,5 +38,8 @@ namespace WebStore.Controllers
         {
             return View(__Employees);
         }
+
+        public IActionResult Blog() => View();
+        public IActionResult BlogSingle() => View();
     }
 }

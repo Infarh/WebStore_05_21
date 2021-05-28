@@ -13,6 +13,7 @@
                 <th>Отчество</th>
                 <th>Возраст</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +28,12 @@
                     <td>
                         @*<a asp-action="Details" asp-route-id="@employee.Id" asp-route="default"> *@
                         <a asp-action="Details" asp-route-id="@employee.Id">
-                            info
+                            <i class="fa fa-info"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@employee.Id">
+                            <i class="fa fa-edit"></i>
                         </a>
                     </td>
                 </tr>

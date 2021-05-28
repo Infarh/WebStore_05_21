@@ -25,6 +25,7 @@
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
                     <td>
+                        @*<a asp-action="Details" asp-route-id="@employee.Id" asp-route="default"> *@
                         <a asp-action="Details" asp-route-id="@employee.Id">
                             info
                         </a>

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebStore.Models;
@@ -21,7 +19,7 @@ namespace WebStore.Controllers
 
         private readonly IConfiguration _Configuration;
 
-        public HomeController(IConfiguration Configuration) { _Configuration = Configuration; }
+        public HomeController(IConfiguration Configuration) => _Configuration = Configuration;
 
         public IActionResult Index()
         {
@@ -50,6 +48,6 @@ namespace WebStore.Controllers
         }
 
         public IActionResult Blog() => View();
-        public IActionResult BlogSingle() => View();
+        //public IActionResult BlogSingle() => View();
     }
 }

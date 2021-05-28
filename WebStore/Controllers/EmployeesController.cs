@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Models;
+using WebStore.Services.Interfaces;
 
 namespace WebStore.Controllers
 {
@@ -9,14 +10,18 @@ namespace WebStore.Controllers
     //[Route("Employees")]
     public class EmployeesController : Controller
     {
-       //[Route("all")]
-        public IActionResult Index() => View(__Employees);
+        private readonly IEmployeesData _EmployeesData;
+
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
+
+        //[Route("all")]
+        public IActionResult Index() => View(_EmployeesData.GetAll());
 
         //[Route("info/{id}")]
         //[Route("info-id-{id}")]
         public IActionResult Details(int id)
         {
-            var employee = __Employees.FirstOrDefault(employe => employe.Id == id);
+            var employee = _EmployeesData.Get(id);
 
             if (employee == null)
                 return NotFound();

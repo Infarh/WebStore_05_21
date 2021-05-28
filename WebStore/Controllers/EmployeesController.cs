@@ -72,6 +72,29 @@ namespace WebStore.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id) => View();
+        public IActionResult Delete(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            var employee = _EmployeesData.Get(id);
+            if (employee is null)
+                return NotFound();
+
+            return View(new EmployeeViewModel
+            {
+                Id = employee.Id,
+                LastName = employee.LastName,
+                Name = employee.FirstName,
+                Patronymic = employee.Patronymic,
+                Age = employee.Age,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _EmployeesData.Delete(id);
+            return RedirectToAction("Index");
+        }
     }
 }

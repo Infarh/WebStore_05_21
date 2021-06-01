@@ -1,11 +1,12 @@
-using System.IO;
-using System.Threading.Tasks;
+using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.MiddleWare;
 using WebStore.Services;
@@ -17,21 +18,42 @@ namespace WebStore
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration Configuration)
-        {
-            this.Configuration = Configuration;
-        }
+        public Startup(IConfiguration Configuration) => this.Configuration = Configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IEmployeesData, InMemoryEmployesData>();
+            //services.AddScoped<ITestService, TestService>();
+            //services.AddScoped<IPrinter, DebugPrinter>();
+
+            services.AddSingleton<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся один раз на всё время работы приложения
+            // Нужен если сервис должен хранить состояние на время работы приложения
+
+            //services.AddScoped<IEmployeesData, InMemoryEmployesData>();     // Объект создаётся единожды для области
+            // Если нужен сервис, который обладает памятью только в пределах обработки одного запроса
+
+            //services.AddTransient<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся каждый раз заново
+            // Когда сервис не подразумевает наличие внутренней памяти
 
             services.AddControllersWithViews(opt => opt.Conventions.Add(new TestControllersConvention()))
                .AddRazorRuntimeCompilation();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
+            //var test_service = services.GetRequiredService<ITestService>();
+            //test_service.Test();
+
+
+            //var employees1 = services.GetService<IEmployeesData>();
+            //var employees2 = services.GetService<IEmployeesData>();
+
+            //IEmployeesData employyes3;
+
+            //using (var scope = services.CreateScope())
+            //    employyes3 = scope.ServiceProvider.GetService<IEmployeesData>();
+
+            //var is_equals = ReferenceEquals(employees1, employyes3);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,6 +94,45 @@ namespace WebStore
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+    }
+
+    interface ITestService
+    {
+        void Test();
+    }
+
+
+    class TestService : ITestService
+    {
+        private IPrinter _Printer;
+
+        public TestService(IPrinter Printer)
+        {
+            _Printer = Printer;
+        }
+
+        public void Test()
+        {
+            _Printer.Print("Запуск теста");
+        }
+    }
+
+    interface IPrinter
+    {
+        void Print(string str);
+    }
+
+    class DebugPrinter : IPrinter
+    {
+        public DebugPrinter()
+        {
+            
+        }
+
+        public void Print(string str)
+        {
+            Debug.WriteLine(str);
         }
     }
 }

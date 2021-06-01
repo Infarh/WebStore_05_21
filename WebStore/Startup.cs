@@ -34,6 +34,8 @@ namespace WebStore
             //services.AddTransient<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся каждый раз заново
             // Когда сервис не подразумевает наличие внутренней памяти
 
+            services.AddSingleton<IProductData, InMemoryProductData>();
+
             services.AddControllersWithViews(opt => opt.Conventions.Add(new TestControllersConvention()))
                .AddRazorRuntimeCompilation();
         }

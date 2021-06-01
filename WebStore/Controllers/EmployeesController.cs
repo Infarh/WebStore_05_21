@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+
 using Microsoft.AspNetCore.Mvc;
+
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
@@ -38,7 +41,7 @@ namespace WebStore.Controllers
                 return View(new EmployeeViewModel());
 
             var employee = _EmployeesData.Get((int)id);
-            if (employee is null) 
+            if (employee is null)
                 return NotFound();
 
             var view_model = new EmployeeViewModel
@@ -55,6 +58,15 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult Edit(EmployeeViewModel Model)
         {
+            if (Model.LastName == "Qwe")
+                ModelState.AddModelError("LastName", "Qwe - плохое имя!");
+
+            if (Model.LastName == "Asd" && Model.Name == "Qwe")
+                ModelState.AddModelError("", "Странное сочетание имени и фамилии");
+
+            if (!ModelState.IsValid)
+                return View(Model);
+
             var employee = new Employee
             {
                 Id = Model.Id,

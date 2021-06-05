@@ -2,6 +2,8 @@
 @using WebStore.ViewModels
 @inject IProductData ProductData
 @{
+    ViewBag.Title = "Магазин";
+
     var products = ProductData
         .GetProducts()
         .Take(9)

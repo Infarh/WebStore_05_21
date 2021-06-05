@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace WebStore.Data
         public void Initialize()
         {
             _Logger.LogInformation("Инициализация БД...");
+            var timer = Stopwatch.StartNew();
 
             //_db.Database.EnsureDeleted();
             //_db.Database.EnsureCreated();
@@ -33,10 +35,10 @@ namespace WebStore.Data
             {
                 _Logger.LogInformation("Миграция БД...");
                 _db.Database.Migrate();
-                _Logger.LogInformation("Миграция БД выполнена.");
+                _Logger.LogInformation("Миграция БД выполнена за {0}c", timer.Elapsed.TotalSeconds);
             }
             else
-                _Logger.LogInformation("Миграция БД не требуется.");
+                _Logger.LogInformation("Миграция БД не требуется. {0}c", timer.Elapsed.TotalSeconds);
 
             try
             {
@@ -48,7 +50,7 @@ namespace WebStore.Data
                 throw;
             }
 
-            _Logger.LogInformation("Инициализация БД завершена.");
+            _Logger.LogInformation("Инициализация БД завершена за {0} с", timer.Elapsed.TotalSeconds);
         }
 
         private void InitializeProducts()
@@ -60,6 +62,8 @@ namespace WebStore.Data
             }
 
             _Logger.LogInformation("Инициализация секций...");
+            var timer = Stopwatch.StartNew();
+
 
             using (_db.Database.BeginTransaction())
             {
@@ -72,7 +76,7 @@ namespace WebStore.Data
                 _db.Database.CommitTransaction();
             }
 
-            _Logger.LogInformation("Инициализация секций выполнена.");
+            _Logger.LogInformation("Инициализация секций выполнена. {0} c", timer.Elapsed.TotalSeconds);
 
             _Logger.LogInformation("Инициализация брендов...");
 
@@ -87,7 +91,7 @@ namespace WebStore.Data
                 _db.Database.CommitTransaction();
             }
 
-            _Logger.LogInformation("Инициализация брендов выполнена.");
+            _Logger.LogInformation("Инициализация брендов выполнена за. {0} c", timer.Elapsed.TotalSeconds);
 
             _Logger.LogInformation("Инициализация товаров...");
 
@@ -102,7 +106,7 @@ namespace WebStore.Data
                 _db.Database.CommitTransaction();
             }
 
-            _Logger.LogInformation("Инициализация товаров выполнена.");
+            _Logger.LogInformation("Инициализация товаров выполнена за. {0} c", timer.Elapsed.TotalSeconds);
         }
     }
 }

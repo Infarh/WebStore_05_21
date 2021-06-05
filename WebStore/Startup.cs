@@ -1,15 +1,20 @@
 using System;
-using System.Diagnostics;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using WebStore.DAL.Context;
+using WebStore.Data;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.MiddleWare;
 using WebStore.Services;
+using WebStore.Services.InMemory;
+using WebStore.Services.InSQL;
 using WebStore.Services.Interfaces;
 
 namespace WebStore
@@ -22,19 +27,16 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddScoped<ITestService, TestService>();
-            //services.AddScoped<IPrinter, DebugPrinter>();
+            services.AddDbContext<WebStoreDB>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("MSSQL")));
+            services.AddTransient<WebStoreDBInitializer>();
 
             services.AddSingleton<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся один раз на всё время работы приложения
-            // Нужен если сервис должен хранить состояние на время работы приложения
 
-            //services.AddScoped<IEmployeesData, InMemoryEmployesData>();     // Объект создаётся единожды для области
-            // Если нужен сервис, который обладает памятью только в пределах обработки одного запроса
-
-            //services.AddTransient<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся каждый раз заново
-            // Когда сервис не подразумевает наличие внутренней памяти
-
-            services.AddSingleton<IProductData, InMemoryProductData>();
+            if (Configuration["ProductsDataSource"] == "db")
+                services.AddScoped<IProductData, SqlProductData>();
+            else
+                services.AddSingleton<IProductData, InMemoryProductData>();
 
             services.AddControllersWithViews(opt => opt.Conventions.Add(new TestControllersConvention()))
                .AddRazorRuntimeCompilation();
@@ -42,19 +44,10 @@ namespace WebStore
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
-            //var test_service = services.GetRequiredService<ITestService>();
-            //test_service.Test();
-
-
-            //var employees1 = services.GetService<IEmployeesData>();
-            //var employees2 = services.GetService<IEmployeesData>();
-
-            //IEmployeesData employyes3;
-
-            //using (var scope = services.CreateScope())
-            //    employyes3 = scope.ServiceProvider.GetService<IEmployeesData>();
-
-            //var is_equals = ReferenceEquals(employees1, employyes3);
+            //var initializer = services.GetRequiredService<WebStoreDBInitializer>();
+            //initializer.Initialize();
+            using (var scope = services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<WebStoreDBInitializer>().Initialize();
 
             if (env.IsDevelopment())
             {
@@ -67,74 +60,19 @@ namespace WebStore
 
             app.UseMiddleware<TestMiddleWare>();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    await next();
-            //});
-
-            //app.Map("/TestMapRequest", opt => opt.Run(async context =>
-            //{
-            //    await Task.Delay(100);
-            //    var stream_writer = new StreamWriter(context.Response.Body);
-            //    await stream_writer.WriteAsync("Hello from TestMapRequest");
-            //    await context.Response.CompleteAsync();
-            //}));
-
             app.UseWelcomePage("/WelcomePage");
 
-            //var greetings = Configuration["Greetings"];
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/greetings", async context =>
                 {
-                    //await context.Response.WriteAsync(greetings);
                     await context.Response.WriteAsync(Configuration["Greetings"]);
                 });
 
-                //endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-    }
-
-    interface ITestService
-    {
-        void Test();
-    }
-
-
-    class TestService : ITestService
-    {
-        private IPrinter _Printer;
-
-        public TestService(IPrinter Printer)
-        {
-            _Printer = Printer;
-        }
-
-        public void Test()
-        {
-            _Printer.Print("Запуск теста");
-        }
-    }
-
-    interface IPrinter
-    {
-        void Print(string str);
-    }
-
-    class DebugPrinter : IPrinter
-    {
-        public DebugPrinter()
-        {
-            
-        }
-
-        public void Print(string str)
-        {
-            Debug.WriteLine(str);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Logging;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
@@ -15,8 +15,13 @@ namespace WebStore.Controllers
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
+        private readonly ILogger<EmployeesController> _Logger;
 
-        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
+        public EmployeesController(IEmployeesData EmployeesData, ILogger<EmployeesController> Logger)
+        {
+            _EmployeesData = EmployeesData;
+            _Logger = Logger;
+        }
 
         //[Route("all")]
         public IActionResult Index() => View(_EmployeesData.GetAll());
@@ -67,6 +72,8 @@ namespace WebStore.Controllers
             if (!ModelState.IsValid)
                 return View(Model);
 
+            _Logger.LogInformation("Редактирование сотрудника id:{0}", Model.Id);
+
             var employee = new Employee
             {
                 Id = Model.Id,
@@ -80,6 +87,8 @@ namespace WebStore.Controllers
                 _EmployeesData.Add(employee);
             else
                 _EmployeesData.Update(employee);
+
+            _Logger.LogInformation("Редактирование сотрудника id:{0} завершено", Model.Id);
 
             return RedirectToAction("Index");
         }
@@ -105,7 +114,11 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
+            _Logger.LogInformation("Удаление сотрудника id:{0}", id);
+
             _EmployeesData.Delete(id);
+
+            _Logger.LogInformation("Удаление сотрудника id:{0} завершено", id);
             return RedirectToAction("Index");
         }
     }

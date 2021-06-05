@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<WebStore.Models.Employee>
+@{
+    ViewData["Title"] = "Сотрудники";
+}
 
 <div class="container">
     <h3>Сотрудники магазина</h3>
     <hr />
-    
+
     <p>
         <a asp-action="Create" class="btn btn-default">Создать 1</a>
     </p>

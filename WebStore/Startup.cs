@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.DAL.Context;
+using WebStore.Data;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.MiddleWare;
 using WebStore.Services;
@@ -24,6 +25,7 @@ namespace WebStore
         {
             services.AddDbContext<WebStoreDB>(opt => 
                 opt.UseSqlServer(Configuration.GetConnectionString("MSSQL")));
+            services.AddTransient<WebStoreDBInitializer>();
 
             services.AddSingleton<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся один раз на всё время работы приложения
             services.AddSingleton<IProductData, InMemoryProductData>();
@@ -34,6 +36,11 @@ namespace WebStore
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
+            //var initializer = services.GetRequiredService<WebStoreDBInitializer>();
+            //initializer.Initialize();
+            using(var scope = services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<WebStoreDBInitializer>().Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

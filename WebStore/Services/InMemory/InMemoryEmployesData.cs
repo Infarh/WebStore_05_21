@@ -48,7 +48,7 @@ namespace WebStore.Services.InMemory
             var db_item = Get(employee.Id);
             if (db_item is null) return;
 
-            //db_item.Id = employee.Id; // не делаем, так как во-первых нельзя резактировать id, а во вторых здесь(!) это бессмысленно!
+            //db_item.Id = employee.Id; // не делаем, так как во-первых нельзя редактировать id, а во вторых здесь(!) это бессмысленно!
             db_item.LastName = employee.LastName;
             db_item.FirstName = employee.FirstName;
             db_item.Patronymic = employee.Patronymic;

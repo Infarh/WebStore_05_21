@@ -65,7 +65,7 @@ namespace WebStore.Controllers
                 true
 #endif
                 );
-
+            
             if (login_result.Succeeded)
             {
                 //return Redirect(Model.ReturnUrl); // не безопасно!
@@ -73,7 +73,7 @@ namespace WebStore.Controllers
                 //    return Redirect(Model.ReturnUrl);
                 //else
                 //    return RedirectToAction("Index", "Home");
-                return LocalRedirect(Model.ReturnUrl);
+                return LocalRedirect(Model.ReturnUrl ?? "/");
             }
 
             ModelState.AddModelError("", "Ошибка в имени пользователя, либо в пароле");
@@ -81,7 +81,11 @@ namespace WebStore.Controllers
             return View(Model);
         }
 
-        public IActionResult Logout() => RedirectToAction("Index", "Home");
+        public async Task<IActionResult> Logout()
+        {
+            await _SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 
         public IActionResult AccessDenied() => View();
     }

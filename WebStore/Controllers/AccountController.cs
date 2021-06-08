@@ -17,6 +17,8 @@ namespace WebStore.Controllers
             _SignInManager = SignInManager;
         }
 
+        #region Register
+
         public IActionResult Register() => View(new RegisterUserViewModel());
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -41,9 +43,43 @@ namespace WebStore.Controllers
                 ModelState.AddModelError("", error.Description);
 
             return View(Model);
-        }
+        } 
 
-        public IActionResult Login() => View();
+        #endregion
+
+        public IActionResult Login(string ReturnUrl) => View(new LoginViewModel { ReturnUrl = ReturnUrl });
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel Model)
+        {
+            if (!ModelState.IsValid) return View(Model);
+
+            var login_result = await _SignInManager.PasswordSignInAsync(
+                Model.UserName,
+                Model.Password, 
+                Model.RememberMe,
+#if DEBUG
+                false
+#else
+                true
+#endif
+                );
+
+            if (login_result.Succeeded)
+            {
+                //return Redirect(Model.ReturnUrl); // не безопасно!
+                //if (Url.IsLocalUrl(Model.ReturnUrl))
+                //    return Redirect(Model.ReturnUrl);
+                //else
+                //    return RedirectToAction("Index", "Home");
+                return LocalRedirect(Model.ReturnUrl);
+            }
+
+            ModelState.AddModelError("", "Ошибка в имени пользователя, либо в пароле");
+
+            return View(Model);
+        }
 
         public IActionResult Logout() => RedirectToAction("Index", "Home");
 

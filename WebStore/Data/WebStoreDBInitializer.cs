@@ -60,49 +60,43 @@ namespace WebStore.Data
                 _Logger.LogInformation("БД не нуждается в инициализации товаров");
                 return;
             }
-
-            _Logger.LogInformation("Инициализация секций...");
             var timer = Stopwatch.StartNew();
+
+
+            var sections_pool = TestData.Sections.ToDictionary(section => section.Id);
+            var brands_pool = TestData.Brands.ToDictionary(brand => brand.Id);
+
+            foreach (var section in TestData.Sections.Where(s => s.ParentId != null))
+                section.Parent = sections_pool[(int)section.ParentId!];
+
+            foreach (var product in TestData.Products)
+            {
+                product.Section = sections_pool[product.SectionId];
+                if (product.BrandId is { } brand_id)
+                    product.Brand = brands_pool[brand_id];
+
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = null;
+            }
+
+            foreach (var section in TestData.Sections)
+            {
+                section.Id = 0;
+                section.ParentId = null;
+            }
+
+            foreach (var brand in TestData.Brands) 
+                brand.Id = 0;
 
 
             using (_db.Database.BeginTransaction())
             {
                 _db.Sections.AddRange(TestData.Sections);
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON"); // Костыль!!!
-                _db.SaveChanges();
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
-
-                _db.Database.CommitTransaction();
-            }
-
-            _Logger.LogInformation("Инициализация секций выполнена. {0} c", timer.Elapsed.TotalSeconds);
-
-            _Logger.LogInformation("Инициализация брендов...");
-
-            using (_db.Database.BeginTransaction())
-            {
                 _db.Brands.AddRange(TestData.Brands);
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON"); // Костыль!!!
-                _db.SaveChanges();
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
-
-                _db.Database.CommitTransaction();
-            }
-
-            _Logger.LogInformation("Инициализация брендов выполнена за. {0} c", timer.Elapsed.TotalSeconds);
-
-            _Logger.LogInformation("Инициализация товаров...");
-
-            using (_db.Database.BeginTransaction())
-            {
                 _db.Products.AddRange(TestData.Products);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON"); // Костыль!!!
                 _db.SaveChanges();
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
-
                 _db.Database.CommitTransaction();
             }
 

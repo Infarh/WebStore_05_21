@@ -15,7 +15,7 @@
                     <!--product-details-->
                     <div class="col-sm-5">
                         <div class="view-product">
-                            <img src="images/product-details/1.jpg" alt="" />
+                            <img src="~/images/shop/@Model.ImageUrl" alt="" />
                             <h3>ZOOM</h3>
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -23,19 +23,19 @@
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
                                 </div>
                                 <div class="item">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
                                 </div>
                                 <div class="item">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
                                 </div>
 
                             </div>
@@ -53,10 +53,10 @@
                     <div class="col-sm-7">
                         <div class="product-information">
                             <!--/product-information-->
-                            <img src="images/shop/@Model.ImageUrl" class="newarrival" alt="" />
+                            @*<img src="~/images/shop/@Model.ImageUrl" class="newarrival" alt="" />*@
                             <h2>@Model.Name</h2>
                             <p>Артикул: @Model.Id.ToString("00000000")</p>
-                            <img src="images/product-details/rating.png" alt="" />
+                            <img src="~/images/product-details/rating.png" alt="" />
                             <span>
                                 <span>@Model.Price.ToString("C")</span>
                                 <label>Количество:</label>
@@ -67,8 +67,9 @@
                             </span>
                             <p><b>Доступность:</b> На складе</p>
                             <p><b>Состояние:</b> Новое</p>
-                            <p><b>Brand:</b> E-SHOPPER</p>
-                            <a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
+                            <p><b>Секция:</b> @Model.Section</p>
+                            <p><b>Бренд:</b> @Model.Brand</p>
+                            <a href=""><img src="~/images/product-details/share.png" class="share img-responsive" alt="" /></a>
                         </div><!--/product-information-->
                     </div>
                 </div><!--/product-details-->

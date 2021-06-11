@@ -1,4 +1,6 @@
-﻿namespace WebStore.Models
+﻿using WebStore.Domain.Entities.Identity;
+
+namespace WebStore.Models
 {
     public class Employee
     {
@@ -12,6 +14,4 @@
 
         public int Age { get; set; }
     }
-
-    //public record Employee2(int Id, string FirstName, string LastName, string Patronymic, int Age);
 }

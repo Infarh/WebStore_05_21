@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebStore.Models.Employee>
+﻿@using WebStore.Domain.Entities.Identity
+@model IEnumerable<WebStore.Models.Employee>
 @{
     ViewData["Title"] = "Сотрудники";
 }
@@ -7,12 +8,15 @@
     <h3>Сотрудники магазина</h3>
     <hr />
 
-    <p>
-        <a asp-action="Create" class="btn btn-default">Создать 1</a>
-    </p>
-    <p>
-        <a asp-action="Edit" class="btn btn-default">Создать 2</a>
-    </p>
+    @if (User.IsInRole(Role.Administrators))
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-default">Создать 1</a>
+        </p>
+        <p>
+            <a asp-action="Edit" class="btn btn-default">Создать 2</a>
+        </p>
+    }
 
     <hr />
 
@@ -25,8 +29,11 @@
                 <th>Отчество</th>
                 <th>Возраст</th>
                 <th></th>
-                <th></th>
-                <th></th>
+                @if (User.IsInRole(Role.Administrators))
+                {
+                    <th></th>
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -44,18 +51,21 @@
                             <i class="fa fa-info"></i>
                         </a>
                     </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@employee.Id">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <form asp-action="DeleteConfirmed" asp-route-id="@employee.Id">
-                            <button type="submit">
-                                <i class="fa fa-trash-o text-danger"></i>
-                            </button>
-                        </form>
-                    </td>
+                    @if (User.IsInRole(Role.Administrators))
+                    {
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@employee.Id">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <form asp-action="DeleteConfirmed" asp-route-id="@employee.Id">
+                                <button type="submit">
+                                    <i class="fa fa-trash-o text-danger"></i>
+                                </button>
+                            </form>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

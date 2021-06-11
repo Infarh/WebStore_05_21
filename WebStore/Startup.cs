@@ -14,6 +14,7 @@ using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.MiddleWare;
+using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
 using WebStore.Services.Interfaces;
@@ -71,11 +72,13 @@ namespace WebStore
             });
 
             services.AddSingleton<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся один раз на всё время работы приложения
-
+            services.AddScoped<ICartService, InCookiesCartService>();
             if (Configuration["ProductsDataSource"] == "db")
                 services.AddScoped<IProductData, SqlProductData>();
             else
                 services.AddSingleton<IProductData, InMemoryProductData>();
+
+            
 
             services.AddControllersWithViews(opt => opt.Conventions.Add(new TestControllersConvention()))
                .AddRazorRuntimeCompilation();

@@ -1,9 +1,9 @@
-﻿namespace WebStore.Domain.Entities
-{
-    public class Employee
-    {
-        public int Id { get; set; }
+﻿using WebStore.Domain.Entities.Base;
 
+namespace WebStore.Domain.Entities
+{
+    public class Employee : Entity
+    {
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

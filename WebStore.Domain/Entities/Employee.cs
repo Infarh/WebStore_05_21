@@ -1,6 +1,4 @@
-﻿using WebStore.Domain.Entities.Identity;
-
-namespace WebStore.Models
+﻿namespace WebStore.Domain.Entities
 {
     public class Employee
     {

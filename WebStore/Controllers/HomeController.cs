@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebStore.Infrastructure.Mapping;
-using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 

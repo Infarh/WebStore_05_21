@@ -39,6 +39,7 @@ namespace WebStore.Controllers
         }
 
         [Authorize]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckOut(OrderViewModel OrderModel, [FromServices] IOrderService OrderService)
         {
             if (!ModelState.IsValid)

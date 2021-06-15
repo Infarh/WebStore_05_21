@@ -1,6 +1,6 @@
 ﻿@model WebStore.ViewModels.OrderViewModel
 
-<form asp-action="CheckOut">
+<form asp-action="CheckOut" asp-antiforgery="true">
     <div class="row">
         <div class="col-sm-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

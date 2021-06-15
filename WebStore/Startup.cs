@@ -37,10 +37,24 @@ namespace WebStore
             //};
             //var connection_string_with_password = connection_string.ConnectionString;
 
-            services.AddDbContext<WebStoreDB>(opt =>
-                opt.UseSqlServer(
-                    Configuration.GetConnectionString("MSSQL")//,
-                    /*o => o.MigrationsAssembly("WebStore.DAL.SqlServer")*/));
+            var database_name = Configuration["Database"];
+
+            switch (database_name)
+            {
+                case "MSSQL":
+                    services.AddDbContext<WebStoreDB>(opt =>
+                        opt.UseSqlServer(
+                            Configuration.GetConnectionString("MSSQL")//,
+                            /*o => o.MigrationsAssembly("WebStore.DAL.SqlServer")*/));
+                    break;
+                case "Sqlite":
+                    services.AddDbContext<WebStoreDB>(opt => 
+                        opt.UseSqlite(
+                            Configuration.GetConnectionString("Sqlite"), 
+                            o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+                    break;
+            }
+
             services.AddTransient<WebStoreDBInitializer>();
 
             services.AddIdentity<User, Role>(/*opt => { }*/)

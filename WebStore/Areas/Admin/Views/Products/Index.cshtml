@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebStore.Domain.Entities.Product>
+@{
+    ViewBag.Title = "Управление каталогом товаров";
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Html.DisplayNameFor(m => m.Id)</th>
+                <th>@Html.DisplayNameFor(m => m.Name)</th>
+                <th>@Html.DisplayNameFor(m => m.Brand)</th>
+                <th>@Html.DisplayNameFor(m => m.Section)</th>
+                <th>@Html.DisplayNameFor(m => m.ImageUrl)</th>
+                <th>@Html.DisplayNameFor(m => m.Price)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                var brand_name = product.Brand?.Name;
+                <tr>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@product.Id">
+                            <i class="glyphicon glyphicon-edit"></i>ред.
+                        </a>
+                    </td>
+                    <td>@Html.DisplayFor(_ => product.Id)</td>
+                    <td>@Html.DisplayFor(_ => product.Name)</td>
+                    <td>@Html.DisplayFor(_ => brand_name)</td>
+                    <td>@Html.DisplayFor(_ => product.Section.Name)</td>
+                    <td>
+                        <img src="~/images/shop/@product.ImageUrl" width="50" alt="@product.Name" />
+                    </td>
+                    <td>@Html.DisplayFor(_ => product.Price)</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@product.Id" class="text-danger">
+                            <i class="glyphicon glyphicon-remove"></i>удал.
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

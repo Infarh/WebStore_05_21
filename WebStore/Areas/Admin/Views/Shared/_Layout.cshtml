@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Responsive Admin</title>
+
+    <partial name="Partial/_Styles" />
+
+</head>
+<body>
+
+    <div id="wrapper">
+        <partial name="Partial/_Header" />
+
+        <partial name="Partial/_LeftSiteBar" />
+        
+        <div id="page-wrapper">
+            @RenderBody()
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+
+    <partial name="Partial/_Footer" />
+
+
+    <partial name="Partial/_Scripts" />
+</body>
+</html>

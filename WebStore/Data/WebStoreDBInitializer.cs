@@ -71,6 +71,16 @@ namespace WebStore.Data
                 throw;
             }
 
+            try
+            {
+                AddEmployees();
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Ошибка при инициализации данных БД сотрудников");
+                throw;
+            }
+
             _Logger.LogInformation("Инициализация БД завершена за {0} с", timer.Elapsed.TotalSeconds);
         }
 
@@ -173,6 +183,15 @@ namespace WebStore.Data
 
             _Logger.LogInformation("Инициализация данных БД системы Identity выполнена за {0} c",
                 timer.Elapsed.TotalSeconds);
+        }
+
+        private void AddEmployees()
+        {
+            if(_db.Employees.Any()) return;
+
+            TestData.Employees.ForEach(e => e.Id = 0);
+            _db.Employees.AddRange(TestData.Employees);
+            _db.SaveChanges();
         }
     }
 }

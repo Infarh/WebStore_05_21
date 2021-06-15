@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 
 using WebStore.Data;
-using WebStore.Models;
+using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
 
 namespace WebStore.Services.InMemory

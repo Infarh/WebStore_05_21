@@ -1,5 +1,4 @@
-﻿using WebStore.Models;
-using WebStore.ViewModels;
+﻿using WebStore.ViewModels;
 
 namespace WebStore.Services.Interfaces
 {

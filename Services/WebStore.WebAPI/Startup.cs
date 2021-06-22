@@ -15,7 +15,6 @@ namespace WebStore.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Тестовый комментарий на Русском языке
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

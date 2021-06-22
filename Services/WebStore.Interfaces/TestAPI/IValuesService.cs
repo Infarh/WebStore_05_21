@@ -12,6 +12,6 @@ namespace WebStore.Interfaces.TestAPI
 
         void Edit(int index, string str);
 
-        void Delete(int index);
+        bool Delete(int index);
     }
 }

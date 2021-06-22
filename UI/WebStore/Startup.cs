@@ -15,10 +15,10 @@ using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.MiddleWare;
+using WebStore.Interfaces.Services;
 using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
-using WebStore.Services.Interfaces;
 
 namespace WebStore
 {

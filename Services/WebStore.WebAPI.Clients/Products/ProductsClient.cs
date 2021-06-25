@@ -24,7 +24,7 @@ namespace WebStore.WebAPI.Clients.Products
 
         public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
         {
-            var response = Post(Address, Filter);
+            var response = Post(Address, Filter ?? new ProductFilter());
             var products = response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>().Result;
             return products.FromDTO();
         }

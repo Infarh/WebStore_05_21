@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
@@ -7,6 +8,7 @@ using WebStore.Services.Data;
 
 namespace WebStore.Services.Services.InMemory
 {
+    [Obsolete("Поддержка класса размещения товаров в памяти прекращена", true)]
     public class InMemoryProductData : IProductData
     {
         public IEnumerable<Section> GetSections() => TestData.Sections;

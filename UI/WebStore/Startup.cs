@@ -50,9 +50,9 @@ namespace WebStore
                             /*o => o.MigrationsAssembly("WebStore.DAL.SqlServer")*/));
                     break;
                 case "Sqlite":
-                    services.AddDbContext<WebStoreDB>(opt => 
+                    services.AddDbContext<WebStoreDB>(opt =>
                         opt.UseSqlite(
-                            Configuration.GetConnectionString("Sqlite"), 
+                            Configuration.GetConnectionString("Sqlite"),
                             o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
                     break;
             }
@@ -98,10 +98,7 @@ namespace WebStore
             //services.AddSingleton<IEmployeesData, InMemoryEmployesData>();  // Объект InMemoryEmployesData создаётся один раз на всё время работы приложения
             services.AddScoped<IEmployeesData, SqlEmployeesData>();
             services.AddScoped<ICartService, InCookiesCartService>();
-            if (Configuration["ProductsDataSource"] == "db")
-                services.AddScoped<IProductData, SqlProductData>();
-            else
-                services.AddSingleton<IProductData, InMemoryProductData>();
+            services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<IOrderService, SqlOrderService>();
 
             services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new Uri(Configuration["WebAPI"]));

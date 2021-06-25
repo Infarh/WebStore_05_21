@@ -13,7 +13,11 @@ namespace WebStore.Services.Services.InMemory
     {
         public IEnumerable<Section> GetSections() => TestData.Sections;
 
+        public Section GetSection(int id) => throw new NotSupportedException();
+
         public IEnumerable<Brand> GetBrands() => TestData.Brands;
+
+        public Brand GetBrand(int id) => throw new NotSupportedException();
 
         public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
         {

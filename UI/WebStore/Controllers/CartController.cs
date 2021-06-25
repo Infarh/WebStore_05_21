@@ -52,7 +52,8 @@ namespace WebStore.Controllers
             var order = await OrderService.CreateOrder(
                 User.Identity!.Name,
                 _CartService.GetViewModel(),
-                OrderModel);
+                OrderModel)
+               .ConfigureAwait(true);
 
             _CartService.Clear();
 

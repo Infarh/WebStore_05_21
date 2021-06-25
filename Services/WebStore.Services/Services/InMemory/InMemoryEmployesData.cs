@@ -8,6 +8,7 @@ using WebStore.Services.Data;
 
 namespace WebStore.Services.Services.InMemory
 {
+    [Obsolete("Поддержка класса размещения сотрудников в памяти прекращена", true)]
     public class InMemoryEmployesData : IEmployeesData
     {
         private readonly ILogger<InMemoryEmployesData> _Logger;

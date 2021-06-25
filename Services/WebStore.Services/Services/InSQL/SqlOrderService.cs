@@ -23,15 +23,17 @@ namespace WebStore.Services.Services.InSQL
             _UserManager = UserManager;
         }
 
-        public async Task<IEnumerable<Order>> GetUserOrder(string UserName) => await _db.Orders
+        public async Task<IEnumerable<Order>> GetUserOrders(string UserName) => await _db.Orders
            .Include(order => order.User)
            .Include(order => order.Items)
+           .ThenInclude(item => item.Product)
            .Where(order => order.User.UserName == UserName)
            .ToArrayAsync();
 
         public async Task<Order> GetOrderById(int id) => await _db.Orders
            .Include(order => order.User)
            .Include(order => order.Items)
+           .ThenInclude(item => item.Product)
            .FirstOrDefaultAsync(order => order.Id == id);
 
         public async Task<Order> CreateOrder(string UserName, CartViewModel Cart, OrderViewModel OrderModel)

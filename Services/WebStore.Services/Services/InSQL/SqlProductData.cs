@@ -14,11 +14,11 @@ namespace WebStore.Services.Services.InSQL
 
         public SqlProductData(WebStoreDB db) => _db = db;
 
-        public IEnumerable<Section> GetSections() => _db.Sections;
+        public IEnumerable<Section> GetSections() => _db.Sections.Include(s => s.Products);
 
         public Section GetSection(int id) => _db.Sections.Include(s => s.Products).FirstOrDefault(s => s.Id == id);
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands;
+        public IEnumerable<Brand> GetBrands() => _db.Brands.Include(b => b.Products);
 
         public Brand GetBrand(int id) => _db.Brands.Include(b => b.Products).FirstOrDefault(b => b.Id == id);
 

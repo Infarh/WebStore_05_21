@@ -12,7 +12,6 @@ namespace WebStore.WebAPI.Clients.Identity
     public class RolesClient : BaseClient, IRolesClient
     {
         public RolesClient(HttpClient Client) : base(Client, WebAPIAddress.Identity.Roles) { }
-        public void Dispose() { throw new System.NotImplementedException(); }
 
         public async Task<IdentityResult> CreateAsync(Role role, CancellationToken Cancel) { throw new System.NotImplementedException(); }
 

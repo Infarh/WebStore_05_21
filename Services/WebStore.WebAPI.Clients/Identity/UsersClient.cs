@@ -15,8 +15,6 @@ namespace WebStore.WebAPI.Clients.Identity
     {
         public UsersClient(HttpClient Client) : base(Client, WebAPIAddress.Identity.Users) { }
 
-        public void Dispose() { throw new System.NotImplementedException(); }
-
         public async Task<string> GetUserIdAsync(User user, CancellationToken Cancel) { throw new System.NotImplementedException(); }
 
         public async Task<string> GetUserNameAsync(User user, CancellationToken Cancel) { throw new System.NotImplementedException(); }

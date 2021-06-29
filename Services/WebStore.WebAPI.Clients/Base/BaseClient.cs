@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
@@ -22,6 +23,7 @@ namespace WebStore.WebAPI.Clients.Base
         protected async Task<T> GetAsync<T>(string url, CancellationToken Cancel = default)
         {
             var response = await Http.GetAsync(url, Cancel).ConfigureAwait(false);
+            if (response.StatusCode == HttpStatusCode.NoContent) return default;
             return await response
                .EnsureSuccessStatusCode()
                .Content.ReadFromJsonAsync<T>(cancellationToken: Cancel)

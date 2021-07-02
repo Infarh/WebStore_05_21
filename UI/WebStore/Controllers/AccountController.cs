@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using WebStore.Domain.Entities.Identity;
 using WebStore.Domain.ViewModels;
 
@@ -51,7 +53,7 @@ namespace WebStore.Controllers
 
                 await _UserManager.AddToRoleAsync(user, Role.Users);
 
-                _Logger.LogInformation("Пользователю {0} назначена роль {1}", 
+                _Logger.LogInformation("Пользователю {0} назначена роль {1}",
                     user.UserName, Role.Users);
 
                 //await _UserManager.RemoveFromRoleAsync(user, Role.Administrators);
@@ -71,7 +73,7 @@ namespace WebStore.Controllers
                 string.Join(", ", register_result.Errors.Select(err => err.Description)));
 
             return View(Model);
-        } 
+        }
 
         #endregion
 
@@ -87,7 +89,7 @@ namespace WebStore.Controllers
 
             var login_result = await _SignInManager.PasswordSignInAsync(
                 Model.UserName,
-                Model.Password, 
+                Model.Password,
                 Model.RememberMe,
 #if DEBUG
                 false
@@ -95,9 +97,10 @@ namespace WebStore.Controllers
                 true
 #endif
                 );
-            
+
             if (login_result.Succeeded)
             {
+                _Logger.LogInformation("Пользователь {0} успешно вошёл в систему", Model.UserName);
                 //return Redirect(Model.ReturnUrl); // не безопасно!
                 //if (Url.IsLocalUrl(Model.ReturnUrl))
                 //    return Redirect(Model.ReturnUrl);
@@ -108,12 +111,17 @@ namespace WebStore.Controllers
 
             ModelState.AddModelError("", "Ошибка в имени пользователя, либо в пароле");
 
+            _Logger.LogWarning("Ошибка при указании учётных данных в процессе входа {0} в систему", 
+                Model.UserName);
+
             return View(Model);
         }
 
         public async Task<IActionResult> Logout()
         {
+            var user_name = User.Identity!.Name;
             await _SignInManager.SignOutAsync();
+            _Logger.LogInformation("Пользователь {0} вышел из системы", user_name);
             return RedirectToAction("Index", "Home");
         }
 

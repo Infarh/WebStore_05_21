@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +60,52 @@ namespace WebStore.Tests.Controllers
 
             var content_result = Assert.IsType<ContentResult>(result);
             Assert.Equal(expected_result_str, content_result.Content);
+        }
+
+        [TestMethod, ExpectedException(typeof(ApplicationException))]
+        public void Throw_thrown_ApplicationException()
+        {
+            var configuration_mock = new Mock<IConfiguration>();
+
+            var controller = new HomeController(configuration_mock.Object);
+            const string expected_error_message = "Test error message";
+
+            var result = controller.Throw(expected_error_message);
+        }
+
+        [TestMethod]
+        public void Throw_thrown_ApplicationException2()
+        {
+            var configuration_mock = new Mock<IConfiguration>();
+
+            var controller = new HomeController(configuration_mock.Object);
+            const string expected_error_message = "Test error message";
+
+            Exception error = null;
+            try
+            {
+                var result = controller.Throw(expected_error_message);
+            }
+            catch (Exception e)
+            {
+                error = e;
+            }
+
+            var app_exception = Assert.IsType<ApplicationException>(error);
+            Assert.Equal(expected_error_message, app_exception.Message);
+        }
+
+        [TestMethod]
+        public void Throw_thrown_ApplicationException3()
+        {
+            var configuration_mock = new Mock<IConfiguration>();
+
+            var controller = new HomeController(configuration_mock.Object);
+            const string expected_error_message = "Test error message";
+
+            var exception = Assert.Throws<ApplicationException>(() => controller.Throw(expected_error_message));
+
+            Assert.Equal(expected_error_message, exception.Message);
         }
     }
 }

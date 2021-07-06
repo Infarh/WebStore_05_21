@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Domain.Entities.Orders;
@@ -16,11 +17,13 @@ namespace WebStore.Services.Services.InSQL
     {
         private readonly WebStoreDB _db;
         private readonly UserManager<User> _UserManager;
+        private readonly ILogger<SqlOrderService> _Logger;
 
-        public SqlOrderService(WebStoreDB db, UserManager<User> UserManager)
+        public SqlOrderService(WebStoreDB db, UserManager<User> UserManager, ILogger<SqlOrderService> Logger)
         {
             _db = db;
             _UserManager = UserManager;
+            _Logger = Logger;
         }
 
         public async Task<IEnumerable<Order>> GetUserOrders(string UserName) => await _db.Orders
@@ -41,6 +44,8 @@ namespace WebStore.Services.Services.InSQL
             var user = await _UserManager.FindByNameAsync(UserName);
             if (user is null)
                 throw new InvalidOperationException($"Пользователь {UserName} отсутствует в БД");
+
+            _Logger.LogInformation("Формирование заказа для пользователя {0}", user);
 
             await using var transaction = await _db.Database.BeginTransactionAsync();
 
@@ -74,6 +79,8 @@ namespace WebStore.Services.Services.InSQL
             await _db.SaveChangesAsync();
 
             await transaction.CommitAsync();
+
+            _Logger.LogInformation("Заказ для {0} успешно сформирован");
 
             return order;
         }

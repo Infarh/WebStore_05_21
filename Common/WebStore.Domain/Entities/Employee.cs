@@ -16,5 +16,7 @@ namespace WebStore.Domain.Entities
         public string Patronymic { get; set; }
 
         public int Age { get; set; }
+
+        public override string ToString() => $"(id:{Id}) {LastName} {FirstName} {Patronymic} age:{Age}";
     }
 }

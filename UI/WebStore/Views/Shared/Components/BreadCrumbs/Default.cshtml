@@ -4,37 +4,37 @@
     <ol class="breadcrumb">
         <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
         <li class="active"><a asp-controller="Catalog" asp-action="Index">Каталог</a></li>
-        
-        @if (Model.Section != null)
+
+        @if (Model.Section is { Id: var child_section_id, Name: var child_section_name } child_section)
         {
-            if (Model.Section.Parent != null)
+            if (child_section.Parent is { Id: var parent_section_id, Name: var parent_section_name })
             {
                 <li>
-                    <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@Model.Section.Parent.Id">
-                        @Model.Section.Parent.Name
+                    <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@parent_section_id">
+                        @parent_section_name
                     </a>
                 </li>
             }
 
             <li>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@Model.Section.Id">
-                    @Model.Section.Name
+                <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@child_section_id">
+                    @child_section_name
                 </a>
             </li>
         }
 
-        @if (Model.Brand != null)
+        @if (Model.Brand is { Id: var brand_id, Name: var brand_name })
         {
             <li>
-                <a asp-controller="Catalog" asp-action="Index" asp-route-BrandId="@Model.Brand.Id">
-                    @Model.Brand.Name
+                <a asp-controller="Catalog" asp-action="Index" asp-route-BrandId="@brand_id">
+                    @brand_name
                 </a>
             </li>
         }
-       
-        @if (Model.Product != null)
+
+        @if (Model.Product is { Length: > 0 } product)
         {
-            <li>@Model.Product</li>
+            <li>@product</li>
         }
 
     </ol>

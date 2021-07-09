@@ -13,7 +13,7 @@ namespace WebStore.Components
 
         public SectionsViewComponent(IProductData ProductData) => _ProductData = ProductData;
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(string SectionId)
         {
             var sections = _ProductData.GetSections();
 

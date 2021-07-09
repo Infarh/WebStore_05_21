@@ -22,6 +22,9 @@ namespace WebStore.Components
 
             var sections = GetSections(section_id, out var parent_section_id);
 
+            ViewBag.SectionId = section_id;
+            ViewData["ParentSectionId"] = parent_section_id;
+
             return View(new SelectableSectionsViewModel
             {
                 Sections = sections,

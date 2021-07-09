@@ -2,13 +2,13 @@
     <ul class="nav navbar-nav collapse navbar-collapse">
         <li><a asp-controller="Home" asp-action="Index" class="active">Home</a></li>
         <li class="dropdown">
-            <a  ws-is-active-route asp-controller="Catalog" asp-action="Index">Магазин<i class="fa fa-angle-down"></i></a>
+            <a  ws-is-active-route ws-ignore-action asp-controller="Catalog" asp-action="Index">Магазин<i class="fa fa-angle-down"></i></a>
             <ul role="menu" class="sub-menu">
                 <li><a ws-is-active-route asp-controller="Catalog" asp-action="Index">Каталог</a></li>
             </ul>
         </li>
         <li class="dropdown">
-            <a href="#">Блог<i class="fa fa-angle-down"></i></a>
+            <a ws-is-active-route ws-ignore-action asp-controller="Home" asp-action="Blog">Блог<i class="fa fa-angle-down"></i></a>
             <ul role="menu" class="sub-menu">
                 <li><a ws-is-active-route asp-controller="Home" asp-action="Blog">Список блогов</a></li>
             </ul>

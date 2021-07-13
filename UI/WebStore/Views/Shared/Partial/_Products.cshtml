@@ -21,6 +21,7 @@
                             </a>
                         </p>
                         <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" 
+                           data-id="@product.Id"
                            class="btn btn-default add-to-cart">
                             <i class="fa fa-shopping-cart"></i>
                             В корзину
@@ -38,6 +39,7 @@
                                 </a>
                             </p>
                             <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" 
+                               data-id="@product.Id"
                                class="btn btn-default add-to-cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 В корзину

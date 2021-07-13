@@ -16,7 +16,7 @@ namespace WebStore.Controllers
 
         public IActionResult Index([FromServices] IProductData ProductData)
         {
-            ViewBag.Products = ProductData.GetProducts().Take(9).ToView();
+            ViewBag.Products = ProductData.GetProducts().Products.Take(9).ToView();
             return View();
         }
 

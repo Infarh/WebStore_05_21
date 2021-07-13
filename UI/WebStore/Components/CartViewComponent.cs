@@ -9,6 +9,10 @@ namespace WebStore.Components
 
         public CartViewComponent(ICartService CartService) => _CartService = CartService;
 
-        public IViewComponentResult Invoke() => View(_CartService.GetViewModel());
+        public IViewComponentResult Invoke()
+        {
+            ViewBag.Count = _CartService.GetViewModel().ItemsCount;
+            return View();
+        }
     }
 }

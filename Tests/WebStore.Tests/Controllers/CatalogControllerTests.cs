@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -40,7 +41,12 @@ namespace WebStore.Tests.Controllers
                    Section = new Section { Id = 1, Order = 1, Name = "Section" }
                });
 
-            var controller = new CatalogController(product_data_mock.Object);
+            var configuration_mock = new Mock<IConfiguration>();
+            configuration_mock
+                .Setup(config => config["CatalogPageSize"])
+                .Returns("6");
+
+            var controller = new CatalogController(product_data_mock.Object, configuration_mock.Object);
 
             #endregion
 

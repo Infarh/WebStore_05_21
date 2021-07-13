@@ -22,10 +22,10 @@ namespace WebStore.WebAPI.Clients.Products
 
         public Brand GetBrand(int id) => Get<BrandDTO>($"{Address}/brands/{id}").FromDTO();
 
-        public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
+        public ProductsPage GetProducts(ProductFilter Filter = null)
         {
             var response = Post(Address, Filter ?? new ProductFilter());
-            var products = response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>().Result;
+            var products = response.Content.ReadFromJsonAsync<ProductsPageDTO>().Result;
             return products.FromDTO();
         }
 

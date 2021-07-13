@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain;
+using WebStore.Domain.DTO;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
@@ -19,7 +20,7 @@ namespace WebStore.Services.Services.InMemory
 
         public Brand GetBrand(int id) => throw new NotSupportedException();
 
-        public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
+        public ProductsPage GetProducts(ProductFilter Filter = null)
         {
             IEnumerable<Product> query = TestData.Products;
 
@@ -32,7 +33,14 @@ namespace WebStore.Services.Services.InMemory
             if(Filter?.BrandId is { } brand_id)
                 query = query.Where(product => product.BrandId == brand_id);
 
-            return query;
+            var total_count = query.Count();
+
+            if (Filter is { PageSize: > 0 and var page_size, Page: > 0 and var page_number })
+                query = query
+                   .Skip((page_number - 1) * page_size)
+                   .Take(page_size);
+
+            return new ProductsPage(query, total_count);
         }
 
         public Product GetProductById(int Id) => TestData.Products.SingleOrDefault(p => p.Id == Id);

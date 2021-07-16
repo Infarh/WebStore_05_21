@@ -12,7 +12,7 @@
             
             <a class="btn btn-default"
                data-ajax="true"
-               data-ajax-url="@Url.Action("GetHTML", "AjaxTest", new { id = 42, msg = "Hello World!11", Delay = "0" })"
+               data-ajax-url="@Url.Action("GetHTML", "AjaxTest", new { id = 42, msg = "Hello World!11", Delay = "1700" })"
                data-ajax-loading="#spinner-server"
                data-ajax-update="#panel-server">
                 Загрузка
@@ -32,7 +32,7 @@
                data-ajax="true"
                data-ajax-url="@Url.Action("GetJSON", "AjaxTest", new { id = 13, msg = "QWEQWEQWE", Delay = "1500" })"
                data-ajax-loading="#spinner-client"
-               >
+               data-ajax-success="OnJSONLoaded">
                 Загрузка
             </a>
 
@@ -52,3 +52,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        OnJSONLoaded = data => {
+            const panel = $("#panel-client");
+            panel.empty();
+            panel.append("msg: " + data.message);
+            panel.append("<br/>");
+            panel.append("Server time: " + data.serverTime);
+        }
+    </script>
+}

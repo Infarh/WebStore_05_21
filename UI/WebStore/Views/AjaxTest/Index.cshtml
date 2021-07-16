@@ -1,1 +1,42 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Тестирование ненавязчивого AJAX";
+}
+
+<div class="container">
+    <h3>@ViewData["Title"]</h3>
+    <hr/>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Рендринг на стороне сервера</h4>
+            
+            <a class="btn btn-default">Загрузка</a>
+            
+            <span id="spinner-server" style="display: none">
+                <i class="fa fa-spinner fa-spin"></i>
+            </span>
+
+            <div id="panel-server"></div>
+        </div>
+
+        <div class="col-md-4">
+            <h4>Рендринг на стороне клиента</h4>
+
+            <a class="btn btn-default">Загрузка</a>
+
+            <span id="spinner-client" style="display: none">
+                <i class="fa fa-spinner fa-spin"></i>
+            </span>
+
+            <div id="panel-client"></div>
+        </div>
+
+        <div class="col-md-4">
+            <h4>Ручное формирование разметки</h4>
+
+            <a class="btn btn-default">Загрузка</a>
+
+            <div id="panel-js"></div>
+        </div>
+    </div>
+</div>

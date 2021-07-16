@@ -97,6 +97,8 @@ namespace WebStore
                .AddRazorRuntimeCompilation();
 
             services.AddSignalR();
+
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
@@ -106,7 +108,10 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
             }
+
+            app.UseBlazorFrameworkFiles();
 
             app.UseStaticFiles();
 
@@ -137,6 +142,8 @@ namespace WebStore
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapFallbackToFile("blazor.html");
             });
         }
     }

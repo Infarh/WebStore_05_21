@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,7 +12,7 @@ namespace WebStore.Controllers
 {
     //[Route("Staff")]
     //[Route("Employees")]
-    [Authorize]
+    //[Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
@@ -127,6 +126,13 @@ namespace WebStore.Controllers
 
             _Logger.LogInformation("Удаление сотрудника id:{0} завершено", id);
             return RedirectToAction("Index");
+        }
+
+        public async Task<IEnumerable<Employee>> GetAll()
+        {
+            await Task.Delay(2000);
+
+            return _EmployeesData.GetAll();
         }
     }
 }

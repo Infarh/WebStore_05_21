@@ -1,0 +1,67 @@
+﻿@page "/empl"
+@using WebStore.BlazorUI.Models
+@inject HttpClient Http
+
+<h3>Сотрудники</h3>
+
+@if (_Employees is null)
+{
+    <p>Загрузка данных...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Возраст</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var employee in _Employees)
+        {
+            <tr>
+                <td>@employee.LastName</td>
+                <td>@employee.FirstName</td>
+                <td>@employee.Patronymic</td>
+                <td>@employee.Age</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Employee[] _Employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        _Employees = await Http.GetFromJsonAsync<Employee[]>("employees/getall");
+
+        _ = Update();
+    }
+
+    private async Task Update()
+    {
+        for (var i = 0; i < 10; i++)
+        {
+            await Task.Delay(1000);
+            var employess = _Employees.ToList();
+
+            employess.Add(new Employee
+            {
+                LastName = $"Last name {i}",
+                FirstName = $"First name {i}",
+                Patronymic = $"Patronymic {i}",
+                Age = 18 + i
+            });
+
+            _Employees = employess.ToArray();
+
+            await Update();
+        }
+    }
+}

@@ -451,6 +451,6 @@ namespace WebStore.WebAPI.Clients.Identity
                .ConfigureAwait(false);
         }
 
-        #endregion}
+        #endregion
     }
 }

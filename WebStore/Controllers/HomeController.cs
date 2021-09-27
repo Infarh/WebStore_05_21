@@ -13,10 +13,7 @@ namespace WebStore.Controllers
 
         public HomeController(IConfiguration Configuration) => _Configuration = Configuration;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
         public IActionResult SecondAction()
         {
@@ -26,5 +23,8 @@ namespace WebStore.Controllers
 
         public IActionResult Blog() => View();
         //public IActionResult BlogSingle() => View();
+
+        [Route("~/Status/{Code}")]
+        public IActionResult Status(string Code) => Content($"Status - {Code}");
     }
 }

@@ -54,6 +54,7 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStatusCodePages();
             app.UseStaticFiles();
 
             app.UseRouting();
